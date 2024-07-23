@@ -1,0 +1,58 @@
+﻿@model Prenotazione
+
+@{
+    ViewData["Title"] = "Create Prenotazione";
+}
+
+<h1>Create Prenotazione</h1>
+
+<h4>Prenotazione</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div class="form-group">
+                <label asp-for="CodiceFiscaleCliente" class="control-label"></label>
+                <input asp-for="CodiceFiscaleCliente" class="form-control" />
+                <span asp-validation-for="CodiceFiscaleCliente" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumeroCamera" class="control-label"></label>
+                <input asp-for="NumeroCamera" class="form-control" />
+                <span asp-validation-for="NumeroCamera" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dal" class="control-label"></label>
+                <input asp-for="Dal" class="form-control" />
+                <span asp-validation-for="Dal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Al" class="control-label"></label>
+                <input asp-for="Al" class="form-control" />
+                <span asp-validation-for="Al" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CaparraConfirmatoria" class="control-label"></label>
+                <input asp-for="CaparraConfirmatoria" class="form-control" />
+                <span asp-validation-for="CaparraConfirmatoria" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TariffaApplicata" class="control-label"></label>
+                <input asp-for="TariffaApplicata" class="form-control" />
+                <span asp-validation-for="TariffaApplicata" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TipoSoggiorno" class="control-label"></label>
+                <input asp-for="TipoSoggiorno" class="form-control" />
+                <span asp-validation-for="TipoSoggiorno" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
