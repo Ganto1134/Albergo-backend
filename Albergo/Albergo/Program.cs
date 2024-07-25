@@ -1,19 +1,30 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
+using Albergo.DAO;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Aggiungi i servizi al container
-builder.Services.AddTransient<IPrenotazioneDAO>(provider =>
+builder.Services.AddTransient<IUserDAO, UserDAO>(provider =>
+    new UserDAO(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddTransient<IPrenotazioneDAO, PrenotazioneDAO>(provider =>
     new PrenotazioneDAO(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Admin"));
+});
 
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configura la pipeline delle richieste HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -29,6 +40,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

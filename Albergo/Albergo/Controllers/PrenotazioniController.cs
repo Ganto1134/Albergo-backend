@@ -1,7 +1,9 @@
 ﻿using Albergo.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using Albergo.DAO;
 
+[Authorize]
 public class PrenotazioniController : Controller
 {
     private readonly IPrenotazioneDAO _prenotazioneDAO;
@@ -11,22 +13,7 @@ public class PrenotazioniController : Controller
         _prenotazioneDAO = prenotazioneDAO;
     }
 
-    public async Task<IActionResult> Index()
-    {
-        var prenotazioni = await _prenotazioneDAO.GetAllPrenotazioniAsync();
-        return View(prenotazioni);
-    }
-
-    public async Task<IActionResult> Details(int id)
-    {
-        var prenotazione = await _prenotazioneDAO.GetPrenotazioneAsync(id);
-        if (prenotazione == null)
-        {
-            return NotFound();
-        }
-        return View(prenotazione);
-    }
-
+    [Authorize]
     public IActionResult Create()
     {
         return View();
@@ -34,6 +21,7 @@ public class PrenotazioniController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize]
     public async Task<IActionResult> Create(Prenotazione prenotazione)
     {
         if (ModelState.IsValid)

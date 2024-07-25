@@ -1,5 +1,7 @@
 ﻿using Albergo.Models;
 using System.Data.SqlClient;
+using Albergo.DAO;
+
 
 public class PrenotazioneDAO : IPrenotazioneDAO
 {
@@ -153,5 +155,37 @@ public class PrenotazioneDAO : IPrenotazioneDAO
             await command.ExecuteNonQueryAsync();
         }
     }
-}
+    public async Task<List<Prenotazione>> GetPrenotazioniByCodiceFiscaleAsync(string codiceFiscale)
+    {
+        var prenotazioni = new List<Prenotazione>();
 
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            var command = new SqlCommand("SELECT * FROM Prenotazioni WHERE CodiceFiscaleCliente = @CodiceFiscaleCliente", connection);
+            command.Parameters.AddWithValue("@CodiceFiscaleCliente", codiceFiscale);
+
+            await connection.OpenAsync();
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    prenotazioni.Add(new Prenotazione
+                    {
+                        ID = (int)reader["ID"],
+                        CodiceFiscaleCliente = reader["CodiceFiscaleCliente"].ToString(),
+                        NumeroCamera = (int)reader["NumeroCamera"],
+                        DataPrenotazione = (DateTime)reader["DataPrenotazione"],
+                        NumeroProgressivoAnno = (int)reader["NumeroProgressivoAnno"],
+                        Anno = (int)reader["Anno"],
+                        Dal = (DateTime)reader["Dal"],
+                        Al = (DateTime)reader["Al"],
+                        CaparraConfirmatoria = (decimal)reader["CaparraConfirmatoria"],
+                        TariffaApplicata = (decimal)reader["TariffaApplicata"],
+                        TipoSoggiorno = reader["TipoSoggiorno"].ToString()
+                    });
+                }
+            }
+        }
+        return prenotazioni;
+    }
+}
