@@ -1,58 +1,63 @@
-﻿@model Prenotazione
-
+﻿@model Albergo.Models.CreaPrenotazioneViewModel
 @{
-    ViewData["Title"] = "Create Prenotazione";
+    ViewData["Title"] = "Crea Prenotazione";
 }
 
-<h1>Create Prenotazione</h1>
+<h1>Crea Prenotazione</h1>
 
-<h4>Prenotazione</h4>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Create">
-            <div class="form-group">
-                <label asp-for="CodiceFiscaleCliente" class="control-label"></label>
-                <input asp-for="CodiceFiscaleCliente" class="form-control" />
-                <span asp-validation-for="CodiceFiscaleCliente" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NumeroCamera" class="control-label"></label>
-                <input asp-for="NumeroCamera" class="form-control" />
-                <span asp-validation-for="NumeroCamera" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Dal" class="control-label"></label>
-                <input asp-for="Dal" class="form-control" />
-                <span asp-validation-for="Dal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Al" class="control-label"></label>
-                <input asp-for="Al" class="form-control" />
-                <span asp-validation-for="Al" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CaparraConfirmatoria" class="control-label"></label>
-                <input asp-for="CaparraConfirmatoria" class="form-control" />
-                <span asp-validation-for="CaparraConfirmatoria" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TariffaApplicata" class="control-label"></label>
-                <input asp-for="TariffaApplicata" class="form-control" />
-                <span asp-validation-for="TariffaApplicata" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TipoSoggiorno" class="control-label"></label>
-                <input asp-for="TipoSoggiorno" class="form-control" />
-                <span asp-validation-for="TipoSoggiorno" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Create">
+    <div class="form-group">
+        <label for="NumeroCamera">Camera:</label>
+        <select asp-for="NumeroCamera" class="form-control" asp-items="@(new SelectList(Model.CamereDisponibili, "Numero", "Descrizione"))">
+            <option value="">Seleziona una camera</option>
+        </select>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <label for="DataInizio">Data Inizio:</label>
+        <input type="date" asp-for="DataInizio" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="DataFine">Data Fine:</label>
+        <input type="date" asp-for="DataFine" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="CaparraConfirmatoria">Caparra Confirmatoria:</label>
+        <input type="number" id="CaparraConfirmatoria" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="TariffaApplicata">Tariffa Applicata:</label>
+        <input type="number" id="TariffaApplicata" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="TipoSoggiorno">Tipo di Soggiorno:</label>
+        <select asp-for="TipoSoggiorno" class="form-control">
+            <option value="Mezza Pensione">Mezza Pensione</option>
+            <option value="Pensione Completa">Pensione Completa</option>
+            <option value="Pernottamento con Prima Colazione">Pernottamento con Prima Colazione</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Crea Prenotazione</button>
+</form>
+
+@section Scripts {
+    <script>
+        document.getElementById('NumeroCamera').addEventListener('change', function () {
+            var selectedCameraNumero = parseInt(this.value, 10);
+            var camere = @Html.Raw(Json.Serialize(Model.CamereDisponibili));
+            var selectedCamera = camere.find(camera => camera.numero === selectedCameraNumero);
+
+            if (selectedCamera) {
+                document.getElementById('CaparraConfirmatoria').value = selectedCamera.caparraConfirmatoria;
+                document.getElementById('TariffaApplicata').value = selectedCamera.tariffaApplicata;
+            } else {
+                console.error('Camera non trovata per il numero:', selectedCameraNumero);
+            }
+        });
+    </script>
+}

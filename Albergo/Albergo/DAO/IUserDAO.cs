@@ -6,5 +6,6 @@ namespace Albergo.DAO {
     {
         Task<User> GetUserByUsernameAsync(string username);
         Task CreateUserAsync(User user);
+        Task<User> GetUserByIdAsync(int id);
     }
 }

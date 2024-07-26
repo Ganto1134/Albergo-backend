@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Prenotazione>
+﻿@model IEnumerable<Albergo.Models.Prenotazione>
 
 @{
     ViewData["Title"] = "Admin - Prenotazioni";
@@ -20,12 +20,13 @@
             <th>ID</th>
             <th>Codice Fiscale Cliente</th>
             <th>Numero Camera</th>
+            <th>Descrizione Camera</th>
             <th>Data Prenotazione</th>
             <th>Numero Progressivo Anno</th>
             <th>Anno</th>
             <th>Periodo</th>
-            <th>Caparra</th>
-            <th>Tariffa</th>
+            <th>Caparra Confirmatoria</th>
+            <th>Tariffa Applicata</th>
             <th>Tipo Soggiorno</th>
         </tr>
     </thead>
@@ -36,12 +37,13 @@
                 <td>@prenotazione.ID</td>
                 <td>@prenotazione.CodiceFiscaleCliente</td>
                 <td>@prenotazione.NumeroCamera</td>
+                <td>@prenotazione.Camera?.Descrizione</td>
                 <td>@prenotazione.DataPrenotazione.ToString("dd/MM/yyyy")</td>
                 <td>@prenotazione.NumeroProgressivoAnno</td>
                 <td>@prenotazione.Anno</td>
                 <td>@prenotazione.Dal.ToString("dd/MM/yyyy") - @prenotazione.Al.ToString("dd/MM/yyyy")</td>
-                <td>@prenotazione.CaparraConfirmatoria.ToString("C")</td>
-                <td>@prenotazione.TariffaApplicata.ToString("C")</td>
+                <td>@prenotazione.Camera?.CaparraConfirmatoria.ToString("C")</td>
+                <td>@prenotazione.Camera?.TariffaApplicata.ToString("C")</td>
                 <td>@prenotazione.TipoSoggiorno</td>
             </tr>
         }

@@ -10,8 +10,8 @@
         public int Anno { get; set; }
         public DateTime Dal { get; set; }
         public DateTime Al { get; set; }
-        public decimal CaparraConfirmatoria { get; set; }
-        public decimal TariffaApplicata { get; set; }
         public string TipoSoggiorno { get; set; }
+        public int UserId { get; set; }
+        public Camera Camera { get; set; }
     }
 }

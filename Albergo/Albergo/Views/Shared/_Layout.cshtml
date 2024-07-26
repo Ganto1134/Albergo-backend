@@ -32,6 +32,9 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Prenotazioni" asp-action="Create">Create Prenotazione</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Prenotazioni" asp-action="AggiungiServizio">Aggiungi Servizio</a>
+                            </li>
+                            <li class="nav-item">
                                 <form method="post" asp-controller="Account" asp-action="Logout">
                                     <button type="submit" class="btn btn-link nav-link text-dark">Logout</button>
                                 </form>
@@ -41,12 +44,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin Panel</a>
                                 </li>
+                                <li class="nav-item">
+                                    <form method="post" asp-controller="Account" asp-action="Logout">
+                                        <button type="submit" class="btn btn-link nav-link text-dark">Logout</button>
+                                    </form>
+                                </li>
                             }
-                            <li class="nav-item">
-                                <form method="post" asp-controller="Account" asp-action="Logout">
-                                    <button type="submit" class="btn btn-link nav-link text-dark">Logout</button>
-                                </form>
-                            </li>
                         }
                         else
                         {

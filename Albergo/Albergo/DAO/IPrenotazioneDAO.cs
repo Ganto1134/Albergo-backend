@@ -8,6 +8,8 @@ namespace Albergo.DAO {
         Task<List<Prenotazione>> GetAllPrenotazioniAsync();
         Task UpdatePrenotazioneAsync(Prenotazione prenotazione);
         Task DeletePrenotazioneAsync(int id);
-        Task<List<Prenotazione>> GetPrenotazioniByCodiceFiscaleAsync(string codiceFiscale); // Nuovo metodo
+        Task<List<Prenotazione>> GetPrenotazioniByCodiceFiscaleAsync(string codiceFiscale);
+        Task<List<ServizioAggiuntivo>> GetServiziAggiuntiviAsync();
+        Task AggiungiServizioAsync(ServizioPrenotazione servizioPrenotazione);
     }
 }

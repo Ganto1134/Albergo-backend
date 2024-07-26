@@ -9,6 +9,9 @@ builder.Services.AddTransient<IUserDAO, UserDAO>(provider =>
 builder.Services.AddTransient<IPrenotazioneDAO, PrenotazioneDAO>(provider =>
     new PrenotazioneDAO(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddTransient<ICameraDAO, CameraDAO>(provider =>
+    new CameraDAO(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {

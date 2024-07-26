@@ -109,6 +109,32 @@ namespace Albergo.DAO {
             }
         }
 
+        public async Task<User> GetUserByIdAsync(int id)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("SELECT * FROM Users WHERE ID = @ID", connection);
+                command.Parameters.AddWithValue("@ID", id);
+
+                await connection.OpenAsync();
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        return new User
+                        {
+                            ID = (int)reader["ID"],
+                            Username = reader["Username"].ToString(),
+                            PasswordHash = reader["PasswordHash"].ToString(),
+                            Role = reader["Role"].ToString(),
+                            CodiceFiscale = reader["CodiceFiscale"].ToString(),
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             var users = new List<User>();
