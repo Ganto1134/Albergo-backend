@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Albergo.DAO;
 
-[Authorize(Policy = "AdminOnly")]
+[Authorize]
 public class AdminController : Controller
 {
     private readonly IPrenotazioneDAO _prenotazioneDAO;
