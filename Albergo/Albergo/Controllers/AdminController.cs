@@ -11,14 +11,5 @@ public class AdminController : Controller
     {
         _prenotazioneDAO = prenotazioneDAO;
     }
-
-    public async Task<IActionResult> Index(string codiceFiscale)
-    {
-        var prenotazioni = string.IsNullOrEmpty(codiceFiscale)
-            ? await _prenotazioneDAO.GetAllPrenotazioniAsync()
-            : await _prenotazioneDAO.GetPrenotazioniByCodiceFiscaleAsync(codiceFiscale);
-
-        return View(prenotazioni);
-    }
 }
 

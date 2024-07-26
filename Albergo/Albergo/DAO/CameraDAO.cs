@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using Albergo.Models;
 
 namespace Albergo.DAO
@@ -14,18 +15,18 @@ namespace Albergo.DAO
             _connectionString = connectionString;
         }
 
-        public List<Camera> GetAllCamere()
+        public async Task<List<Camera>> GetAllCamereAsync()
         {
             var camere = new List<Camera>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
                 var command = new SqlCommand("SELECT * FROM Camere", connection);
-                connection.Open();
+                await connection.OpenAsync();
 
-                using (var reader = command.ExecuteReader())
+                using (var reader = await command.ExecuteReaderAsync())
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         var camera = new Camera
                         {
@@ -43,7 +44,7 @@ namespace Albergo.DAO
             return camere;
         }
 
-        public Camera GetCameraById(int id)
+        public async Task<Camera> GetCameraByIdAsync(int id)
         {
             Camera camera = null;
 
@@ -51,11 +52,11 @@ namespace Albergo.DAO
             {
                 var command = new SqlCommand("SELECT * FROM Camere WHERE Numero = @Numero", connection);
                 command.Parameters.AddWithValue("@Numero", id);
-                connection.Open();
+                await connection.OpenAsync();
 
-                using (var reader = command.ExecuteReader())
+                using (var reader = await command.ExecuteReaderAsync())
                 {
-                    if (reader.Read())
+                    if (await reader.ReadAsync())
                     {
                         camera = new Camera
                         {
@@ -72,7 +73,7 @@ namespace Albergo.DAO
             return camera;
         }
 
-        public void AddCamera(Camera camera)
+        public async Task AddCameraAsync(Camera camera)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -86,12 +87,12 @@ namespace Albergo.DAO
                 command.Parameters.AddWithValue("@CaparraConfirmatoria", camera.CaparraConfirmatoria);
                 command.Parameters.AddWithValue("@TariffaApplicata", camera.TariffaApplicata);
 
-                connection.Open();
-                command.ExecuteNonQuery();
+                await connection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
             }
         }
 
-        public void UpdateCamera(Camera camera)
+        public async Task UpdateCameraAsync(Camera camera)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -105,20 +106,20 @@ namespace Albergo.DAO
                 command.Parameters.AddWithValue("@CaparraConfirmatoria", camera.CaparraConfirmatoria);
                 command.Parameters.AddWithValue("@TariffaApplicata", camera.TariffaApplicata);
 
-                connection.Open();
-                command.ExecuteNonQuery();
+                await connection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
             }
         }
 
-        public void DeleteCamera(int id)
+        public async Task DeleteCameraAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 var command = new SqlCommand("DELETE FROM Camere WHERE Numero = @Numero", connection);
                 command.Parameters.AddWithValue("@Numero", id);
 
-                connection.Open();
-                command.ExecuteNonQuery();
+                await connection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
             }
         }
     }

@@ -7,19 +7,25 @@
 
 <form asp-action="Create">
     <div class="form-group">
-        <label for="NumeroCamera">Camera:</label>
+        <label asp-for="CodiceFiscaleCliente">Codice Fiscale Cliente:</label>
+        <input asp-for="CodiceFiscaleCliente" class="form-control" placeholder="Inserisci il Codice Fiscale" />
+        <span asp-validation-for="CodiceFiscaleCliente" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NumeroCamera">Camera:</label>
         <select asp-for="NumeroCamera" class="form-control" asp-items="@(new SelectList(Model.CamereDisponibili, "Numero", "Descrizione"))">
             <option value="">Seleziona una camera</option>
         </select>
+        <span asp-validation-for="NumeroCamera" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label for="DataInizio">Data Inizio:</label>
+        <label asp-for="DataInizio">Data Inizio:</label>
         <input type="date" asp-for="DataInizio" class="form-control" />
     </div>
 
     <div class="form-group">
-        <label for="DataFine">Data Fine:</label>
+        <label asp-for="DataFine">Data Fine:</label>
         <input type="date" asp-for="DataFine" class="form-control" />
     </div>
 
@@ -34,12 +40,13 @@
     </div>
 
     <div class="form-group">
-        <label for="TipoSoggiorno">Tipo di Soggiorno:</label>
+        <label asp-for="TipoSoggiorno">Tipo di Soggiorno:</label>
         <select asp-for="TipoSoggiorno" class="form-control">
             <option value="Mezza Pensione">Mezza Pensione</option>
             <option value="Pensione Completa">Pensione Completa</option>
             <option value="Pernottamento con Prima Colazione">Pernottamento con Prima Colazione</option>
         </select>
+        <span asp-validation-for="TipoSoggiorno" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Crea Prenotazione</button>

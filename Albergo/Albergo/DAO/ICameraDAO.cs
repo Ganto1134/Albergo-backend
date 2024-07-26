@@ -1,13 +1,15 @@
 ﻿using Albergo.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Albergo.DAO
 {
     public interface ICameraDAO
     {
-        List<Camera> GetAllCamere();
-        Camera GetCameraById(int id);
-        void AddCamera(Camera camera);
-        void UpdateCamera(Camera camera);
-        void DeleteCamera(int id);
+        Task<List<Camera>> GetAllCamereAsync();
+        Task<Camera> GetCameraByIdAsync(int id);
+        Task AddCameraAsync(Camera camera);
+        Task UpdateCameraAsync(Camera camera);
+        Task DeleteCameraAsync(int id);
     }
 }

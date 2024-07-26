@@ -19,11 +19,18 @@ public class PrenotazioniController : Controller
         _cameraDAO = cameraDAO;
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Index()
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var prenotazioni = await _prenotazioneDAO.GetPrenotazioniByUserIdAsync(userId);
+        return View(prenotazioni);
+    }
+
+    public async Task<IActionResult> Create()
     {
         var model = new CreaPrenotazioneViewModel
         {
-            CamereDisponibili = _cameraDAO.GetAllCamere()
+            CamereDisponibili = await _cameraDAO.GetAllCamereAsync()
         };
         return View(model);
     }
@@ -53,7 +60,7 @@ public class PrenotazioniController : Controller
             return RedirectToAction("Index");
         }
 
-        model.CamereDisponibili = _cameraDAO.GetAllCamere();
+        model.CamereDisponibili = await _cameraDAO.GetAllCamereAsync();
         return View(model);
     }
 
@@ -109,45 +116,5 @@ public class PrenotazioniController : Controller
         }
         await _prenotazioneDAO.DeletePrenotazioneAsync(id);
         return RedirectToAction(nameof(Index));
-    }
-
-    public async Task<IActionResult> AggiungiServizio(int id)
-    {
-        var servizi = await _prenotazioneDAO.GetServiziAggiuntiviAsync();
-        var model = new AggiungiServizioViewModel
-        {
-            PrenotazioneId = id,
-            ServiziDisponibili = servizi
-        };
-        return View(model);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AggiungiServizio(AggiungiServizioViewModel model)
-    {
-        if (ModelState.IsValid)
-        {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var prenotazione = await _prenotazioneDAO.GetPrenotazioneAsync(model.PrenotazioneId);
-
-            if (prenotazione == null || prenotazione.UserId != userId)
-            {
-                return Unauthorized();
-            }
-
-            var servizioPrenotazione = new ServizioPrenotazione
-            {
-                IDPrenotazione = model.PrenotazioneId,
-                IDServizio = model.ServizioId,
-                Data = DateTime.UtcNow,
-                Quantita = model.Quantita,
-                Prezzo = model.Prezzo
-            };
-
-            await _prenotazioneDAO.AggiungiServizioAsync(servizioPrenotazione);
-            return RedirectToAction(nameof(Index));
-        }
-        return View(model);
     }
 }
